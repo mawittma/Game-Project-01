@@ -15,6 +15,8 @@ namespace GameProject1
         private List<CarSprite> cars;
         private bool playing = false;
         private SpriteFont earthbound;
+        private bool scoring = true;
+        private int score = 0;
 
         public Game1()
         {
@@ -35,7 +37,7 @@ namespace GameProject1
             cars = new List<CarSprite>();
             for(int i = 100; i < 550; i += 70)
             {
-                cars.Add(new CarSprite(i,50,380,carCounter));
+                cars.Add(new CarSprite(i,50,300,carCounter));
                 carCounter++;
                 cars.Add(new CarSprite(i, 400, 680,carCounter));
             }
@@ -81,7 +83,28 @@ namespace GameProject1
                 }
                 chicken.Update(gameTime,_graphics);
                 foreach (var car in cars) car.Update(gameTime,_graphics);
+                foreach(var car in cars)
+                {
+                    if(car.Bounds.CollidesWith(chicken.Bounds))
+                    {
+                        playing = false;
+                        chicken.Collided = true;
+                        score = 0;
+                        scoring = true;
+                    }
+                }
+                if(chicken.position.Y < 100 && scoring)
+                {
+                    score++;
+                    scoring = false;
+                }
+                if(chicken.position.Y > 570 && !scoring)
+                {
+                    score++;
+                    scoring = true;
+                }
             }
+            
             
             // TODO: Add your update logic here
 
@@ -101,6 +124,7 @@ namespace GameProject1
                 _spriteBatch.Draw(grassRect, new Vector2(0, 570), new Rectangle(0, 0, 800, 100), Color.White);
                 chicken.Draw(gameTime, _spriteBatch);
                 foreach (var car in cars) car.Draw(gameTime,_spriteBatch);
+                _spriteBatch.DrawString(earthbound, "Score: " + score, new Vector2(10, 10), Color.White);
             }
             else
             {

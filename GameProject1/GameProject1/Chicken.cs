@@ -18,8 +18,22 @@ namespace GameProject1
         private Texture2D texture;
 
         private bool flipped;
+        /// <summary>
+        /// if the chicken has collided with something
+        /// </summary>
 
-        private Vector2 position = new Vector2(300, 650);
+        public bool Collided = false;
+
+        /// <summary>
+        /// the position of chicken
+        /// </summary>
+        public Vector2 position = new Vector2(300, 650);
+        private BoundingRectangle bounds = new BoundingRectangle(new Vector2(300, 650), 16, 16);
+
+        /// <summary>
+        /// bounding volume of sprite
+        /// </summary>
+        public BoundingRectangle Bounds => bounds;
 
         /// <summary>
         /// Loads the sprite texture using the provided ContentManager
@@ -45,18 +59,25 @@ namespace GameProject1
             if (gamePadState.ThumbSticks.Left.X > 0) flipped = false;
 
             // Apply keyboard movement
-            if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W)) position += new Vector2(0, -1);
-            if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S)) position += new Vector2(0, 1);
+            if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W)) position += new Vector2(0, -2);
+            if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S)) position += new Vector2(0, 2);
             if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
             {
-                position += new Vector2(-1, 0);
+                position += new Vector2(-2, 0);
                 flipped = false;
             }
             if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
             {
-                position += new Vector2(1, 0);
+                position += new Vector2(2, 0);
                 flipped = true;
             }
+            if(Collided)
+            {
+                position = new Vector2(300, 650);
+                Collided = false;
+            }
+            bounds.X = position.X-16;
+            bounds.Y = position.Y-16;
         }
 
         /// <summary>

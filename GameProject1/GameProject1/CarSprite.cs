@@ -10,7 +10,13 @@ namespace GameProject1
     public class CarSprite
     {
         Texture2D texture;
+        /// <summary>
+        /// which way the car is facing
+        /// </summary>
         public bool flipped = true;
+        /// <summary>
+        /// car number
+        /// </summary>
         public int carNumber;
         public Vector2 Position { get; set; }
         /// <summary>
@@ -37,7 +43,7 @@ namespace GameProject1
             System.Random random = new System.Random();
             Position = new Vector2(random.Next(lowB, highB), y);
             Direction = Vector2.UnitX;
-            speedFactor = random.Next(70, 100);
+            speedFactor = random.Next(50, 100);
             bounds = new BoundingRectangle(Position, 118, 49);
             carNumber = num;
         }
@@ -56,14 +62,10 @@ namespace GameProject1
         /// Updates the car
         /// </summary>
         /// <param name="gameTime">An object representing time in the game</param>
+        /// <param name="Graphics">An object represetning the graphics</param>
         public void Update(GameTime gameTime, GraphicsDeviceManager Graphics)
         {
-            //bounds.X = Position.X;
-            //bounds.Y = Position.Y;
             
-            // Move the balls
-            //Center += Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            //Position += Direction * speedFactor * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // Bounce balls off the edge of the screen
             if (Position.X < 0 || Position.X > Graphics.PreferredBackBufferWidth - 118)
