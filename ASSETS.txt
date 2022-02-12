@@ -1,0 +1,5 @@
+Content/Earthbound/Earthbound-Condensed-Bold.otf - Created by Richard Alexander Hall as a pack on fontlibrary.org (https://fontlibrary.org/en/font/earthbound), released under SIL Open Font License
+
+Content/car1_spr.png - Created by Satik64 from OpenGameArt.org, Free to use. CC0 license
+
+Content/MyChicken - Made by me for this game
