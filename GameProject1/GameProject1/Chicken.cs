@@ -76,8 +76,8 @@ namespace GameProject1
                 position = new Vector2(300, 650);
                 Collided = false;
             }
-            bounds.X = position.X-16;
-            bounds.Y = position.Y-16;
+            bounds.X = position.X-32;
+            bounds.Y = position.Y-32;
         }
 
         /// <summary>

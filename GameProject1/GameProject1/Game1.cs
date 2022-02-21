@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace GameProject1
 {
@@ -17,6 +19,10 @@ namespace GameProject1
         private SpriteFont earthbound;
         private bool scoring = true;
         private int score = 0;
+        private SoundEffect Explosion;
+        private SoundEffect Powerup;
+        private Song BackgroundMusic;
+
 
         public Game1()
         {
@@ -58,6 +64,10 @@ namespace GameProject1
             grassRect.SetData(new Color[] { Color.Green });
             chicken.LoadContent(Content);
             foreach (var car in cars) car.LoadContent(Content);
+            Explosion = Content.Load<SoundEffect>("Explosion");
+            Powerup = Content.Load<SoundEffect>("Powerup");
+            BackgroundMusic = Content.Load<Song>("Makaih Beats - NothingWasTheSame (makaih.com)");
+            
             
 
             // TODO: use this.Content to load your game content here
@@ -67,7 +77,12 @@ namespace GameProject1
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter)) playing = true;
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+            {
+                playing = true;
+                MediaPlayer.IsRepeating = true;
+                MediaPlayer.Play(BackgroundMusic);
+            }
             if(playing)
             {
                 foreach(var car in cars)
@@ -91,17 +106,22 @@ namespace GameProject1
                         chicken.Collided = true;
                         score = 0;
                         scoring = true;
+                        Explosion.Play();
+                        System.Threading.Thread.Sleep(1000);
+                        MediaPlayer.Pause();
                     }
                 }
                 if(chicken.position.Y < 100 && scoring)
                 {
                     score++;
                     scoring = false;
+                    Powerup.Play();
                 }
                 if(chicken.position.Y > 570 && !scoring)
                 {
                     score++;
                     scoring = true;
+                    Powerup.Play();
                 }
             }
             

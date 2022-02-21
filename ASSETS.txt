@@ -3,3 +3,9 @@ Content/Earthbound/Earthbound-Condensed-Bold.otf - Created by Richard Alexander 
 Content/car1_spr.png - Created by Satik64 from OpenGameArt.org, (https://opengameart.org/content/car-pixelart )Free to use. CC0 license
 
 Content/MyChicken - Made by me for this game
+
+Content/Explosion.wav - Made by me with Bfxr
+
+Content/Powerup.wav - Made by me with Bfxr
+
+Content/Makaih Beats - NothingWasTheSame (makaih.com).mp3 - Made by Makaih beats, Made with the creative common license, with proper attribution, non commericial use and no derivatives. From freemusicarchive.org
