@@ -22,6 +22,8 @@ namespace GameProject1
         private SoundEffect Explosion;
         private SoundEffect Powerup;
         private Song BackgroundMusic;
+        private List<CarSprite> titleCars;
+        private List<Chicken> titleChicken;
 
 
         public Game1()
@@ -40,6 +42,13 @@ namespace GameProject1
             // TODO: Add your initialization logic here
             int carCounter = 1;
             chicken = new Chicken();
+            titleChicken = new List<Chicken>();
+            for(int i = 170; i <800; i+= 500)
+            {
+                Chicken c = new Chicken();
+                c.position = new Vector2(i, 350);
+                titleChicken.Add(c);
+            }
             cars = new List<CarSprite>();
             for(int i = 100; i < 550; i += 70)
             {
@@ -47,6 +56,10 @@ namespace GameProject1
                 carCounter++;
                 cars.Add(new CarSprite(i, 400, 680,carCounter));
             }
+
+            titleCars = new List<CarSprite>();
+            int carTitleCounter = 0;
+            for (int i = 100; i < 800; i += 500) for (int j = 100; j < 650; j += 400) titleCars.Add(new CarSprite(j,i,i,carTitleCounter++));
 
             
           
@@ -63,7 +76,9 @@ namespace GameProject1
             grassRect = new Texture2D(GraphicsDevice, 1, 1);
             grassRect.SetData(new Color[] { Color.Green });
             chicken.LoadContent(Content);
+            foreach (Chicken c in titleChicken) c.LoadContent(Content);
             foreach (var car in cars) car.LoadContent(Content);
+            foreach (var car in titleCars) car.LoadContent(Content);
             Explosion = Content.Load<SoundEffect>("Explosion");
             Powerup = Content.Load<SoundEffect>("Powerup");
             BackgroundMusic = Content.Load<Song>("Makaih Beats - NothingWasTheSame (makaih.com)");
@@ -98,7 +113,8 @@ namespace GameProject1
                 }
                 chicken.Update(gameTime,_graphics);
                 foreach (var car in cars) car.Update(gameTime,_graphics);
-                foreach(var car in cars)
+             
+                foreach (var car in cars)
                 {
                     if(car.Bounds.CollidesWith(chicken.Bounds))
                     {
@@ -122,6 +138,21 @@ namespace GameProject1
                     score++;
                     scoring = true;
                     Powerup.Play();
+                }
+            }
+            else
+            {
+                foreach (var car in titleCars) car.Update(gameTime, _graphics);
+                foreach (var car in titleCars)
+                {
+                    foreach (var car2 in titleCars)
+                    {
+                        if (car.carNumber != car2.carNumber && car.Bounds.CollidesWith(car2.Bounds))
+                        {
+                            car.Colliding = true;
+                            car2.Colliding = true;
+                        }
+                    }
                 }
             }
             
@@ -148,8 +179,11 @@ namespace GameProject1
             }
             else
             {
+                foreach (var car in titleCars) car.Draw(gameTime, _spriteBatch);
+                foreach (var c in titleChicken) c.Draw(gameTime, _spriteBatch);
                 _spriteBatch.DrawString(earthbound, "Press 'Enter' to Play", new Vector2(200, 200), Color.White);
                 _spriteBatch.DrawString(earthbound, "Press 'ESC' to Quit", new Vector2(200, 400), Color.White);
+
             }
             
             _spriteBatch.End();
