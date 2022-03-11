@@ -22,7 +22,9 @@ namespace GameProject1
         /// if the chicken has collided with something
         /// </summary>
 
-        public bool Collided = false;
+        public bool Reset = false;
+
+        public bool dead = false;
 
         /// <summary>
         /// the position of chicken
@@ -66,15 +68,15 @@ namespace GameProject1
                 position += new Vector2(-2, 0);
                 flipped = false;
             }
-            if ((keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D)) && position.X - 7 < 800)
+            if ((keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D)) && position.X - 7 < 700)
             {
                 position += new Vector2(2, 0);
                 flipped = true;
             }
-            if(Collided)
+            if(Reset)
             {
                 position = new Vector2(300, 650);
-                Collided = false;
+                Reset = false;
             }
             bounds.X = position.X-32;
             bounds.Y = position.Y-32;
@@ -88,7 +90,16 @@ namespace GameProject1
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             SpriteEffects spriteEffects = (flipped) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            spriteBatch.Draw(texture, position, null, Color.White, 0f, new Vector2(64, 64), 1f, spriteEffects, 0);
+            
+            if(dead)
+            {
+                spriteBatch.Draw(texture, position, null, Color.White, MathHelper.Pi, new Vector2(64, 64), 1f, spriteEffects, 0);
+            }
+            else
+            {
+                
+                spriteBatch.Draw(texture, position, null, Color.White, 0f, new Vector2(64, 64), 1f, spriteEffects, 0);
+            }
         }
     }
 }

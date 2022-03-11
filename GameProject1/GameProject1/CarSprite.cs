@@ -99,7 +99,7 @@ namespace GameProject1
         {
             // Use Green for visual collision indication
             SpriteEffects spriteEffects = (flipped) ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            spriteBatch.Draw(texture, Position, null, Color.White, 0, new Vector2(0,0), 1f, spriteEffects, 0);
+            spriteBatch.Draw(texture, Position, null, Color.Gray, 0, new Vector2(0,0), 1f, spriteEffects, 0);
         }
 
     }
