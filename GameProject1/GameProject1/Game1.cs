@@ -28,6 +28,7 @@ namespace GameProject1
         private List<CarSprite> titleCars;
         private List<Chicken> titleChicken;
         private float shakeTime ;
+        private Cube cube;
 
 
         public Game1()
@@ -65,6 +66,7 @@ namespace GameProject1
                 }
                 
             }
+
             cars = new List<CarSprite>();
             for(int i = 100; i < 550; i += 70)
             {
@@ -99,8 +101,8 @@ namespace GameProject1
             Explosion = Content.Load<SoundEffect>("Explosion");
             Powerup = Content.Load<SoundEffect>("Powerup");
             BackgroundMusic = Content.Load<Song>("Makaih Beats - NothingWasTheSame (makaih.com)");
-            
-            
+            cube = new Cube(this);
+
 
             // TODO: use this.Content to load your game content here
         }
@@ -181,6 +183,7 @@ namespace GameProject1
                         }
                     }
                 }
+                cube.Update(gameTime);
             }
             
             
@@ -253,6 +256,7 @@ namespace GameProject1
                 foreach (var c in titleChicken) c.Draw(gameTime, _spriteBatch);
                 _spriteBatch.DrawString(earthbound, "Press 'Enter' to Play", new Vector2(150, 200), Color.White);
                 _spriteBatch.DrawString(earthbound, "Press 'ESC' to Quit", new Vector2(150, 400), Color.White);
+                cube.Draw();
                 _spriteBatch.End();
 
             }
