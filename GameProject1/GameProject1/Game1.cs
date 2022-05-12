@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 using System;
+using System.IO;
 
 namespace GameProject1
 {
@@ -29,6 +30,8 @@ namespace GameProject1
         private List<Chicken> titleChicken;
         private float shakeTime ;
         private Cube cube;
+        private int highscore = 0;
+        private bool instructions = false;
 
 
         public Game1()
@@ -80,6 +83,7 @@ namespace GameProject1
             for (int i = 50; i < 800; i += 500) for (int j = 100; j < 650; j += 400) titleCars.Add(new CarSprite(j,i,i,carTitleCounter++));
 
             
+            
           
             base.Initialize();
 
@@ -111,12 +115,17 @@ namespace GameProject1
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+            if (!instructions && Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
                 playing = true;
                 MediaPlayer.IsRepeating = true;
                 MediaPlayer.Play(BackgroundMusic);
             }
+            if(!playing && Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                instructions = true;
+            }
+            if (instructions && Keyboard.GetState().IsKeyDown(Keys.M)) instructions = false;
             if(playing)
             {
                 foreach(var car in cars)
@@ -147,6 +156,7 @@ namespace GameProject1
                         _explosions.PlaceExplosion(chicken.position);
                         
                         MediaPlayer.Pause();
+                        if (highscore < score) highscore = score;
 
                         //System.Threading.Thread.Sleep(1000);
                         //MediaPlayer.Pause();
@@ -242,6 +252,7 @@ namespace GameProject1
                     chicken.Draw(gameTime, _spriteBatch);
                     foreach (var car in cars) car.Draw(gameTime,_spriteBatch);
                     _spriteBatch.DrawString(earthbound, "Score: " + score, new Vector2(10, 10), Color.White);
+                    _spriteBatch.DrawString(earthbound, "Highscore: " + highscore, new Vector2(400, 10), Color.White);
                     _spriteBatch.End();
                 }
                 //for(int i = 160; i < 550; i+=70) for(int j = 50; j < 700; j+= 150) _spriteBatch.Draw(yellowRect,new Vector2(j,i), new Rectangle(0, 0, 75, 10), Color.White);
@@ -251,13 +262,30 @@ namespace GameProject1
             }
             else
             {
-                _spriteBatch.Begin();
-                foreach (var car in titleCars) car.Draw(gameTime, _spriteBatch);
-                foreach (var c in titleChicken) c.Draw(gameTime, _spriteBatch);
-                _spriteBatch.DrawString(earthbound, "Press 'Enter' to Play", new Vector2(150, 200), Color.White);
-                _spriteBatch.DrawString(earthbound, "Press 'ESC' to Quit", new Vector2(150, 400), Color.White);
-                cube.Draw();
-                _spriteBatch.End();
+                if(instructions)
+                {
+                    _spriteBatch.Begin();
+                    _spriteBatch.DrawString(earthbound, "Press 'M' for Main Menu", new Vector2(50, 10), Color.White);
+                    _spriteBatch.DrawString(earthbound, "Use arrow keys to move", new Vector2(80, 100), Color.White);
+                    _spriteBatch.DrawString(earthbound, "Cross to the other side ", new Vector2(80, 170), Color.White);
+                    _spriteBatch.DrawString(earthbound, "Without getting hit by a car", new Vector2(80, 240), Color.White);
+                    _spriteBatch.DrawString(earthbound, "Go back and forth to try", new Vector2(80, 310), Color.White);
+                    _spriteBatch.DrawString(earthbound, "and beat the highscore", new Vector2(80, 380), Color.White);
+                    _spriteBatch.End();
+                }
+                else
+                {
+                    _spriteBatch.Begin();
+                    foreach (var car in titleCars) car.Draw(gameTime, _spriteBatch);
+                    foreach (var c in titleChicken) c.Draw(gameTime, _spriteBatch);
+                    _spriteBatch.DrawString(earthbound, "Press 'Space' for how to play", new Vector2(50, 10), Color.White);
+                    _spriteBatch.DrawString(earthbound, "Press 'Enter' to Play", new Vector2(140, 200), Color.White);
+                    _spriteBatch.DrawString(earthbound, "Press 'ESC' to Quit", new Vector2(150, 400), Color.White);
+                    _spriteBatch.DrawString(earthbound, "Current highscore: " + highscore, new Vector2(130, 600), Color.White);
+                    //cube.Draw();
+                    _spriteBatch.End();
+                }
+                
 
             }
             
